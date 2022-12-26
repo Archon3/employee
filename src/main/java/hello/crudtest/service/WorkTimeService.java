@@ -22,12 +22,12 @@ public class WorkTimeService {
     private final WorkTimeRepository workTimeRepository;
 
     @Transactional(readOnly = true)
-    public List<WorkTimeQueryDto> queryByName(String empName) {
+    public List<WorkTimeQueryDto> queryByName(String empName, String begDate, String endDate) {
 
         List<WorkTimeQueryDto> resultList = new ArrayList<>();
 
         // 출퇴근
-        List<WorkTimeQueryDto> wtList = workTimeRepository.findByEmp_NameAndWkBegDateBetween(empName, "20221201", "20221231")
+        List<WorkTimeQueryDto> wtList = workTimeRepository.findByEmp_NameAndWkBegDateBetween(empName, begDate, endDate)
                 .stream()
                 .map(WorkTimeQueryDto::new)
                 .collect(Collectors.toList());
@@ -35,7 +35,7 @@ public class WorkTimeService {
         resultList.addAll(wtList);
 
         // 휴가
-        List<WorkTimeQueryDto> vaList = vacationAppRepository.findByEmp_NameAndWkBegDateBetween(empName, "20221201", "20221231")
+        List<WorkTimeQueryDto> vaList = vacationAppRepository.findByEmp_NameAndWkBegDateBetween(empName, begDate, endDate)
                 .stream()
                 .map(WorkTimeQueryDto::new)
                 .collect(Collectors.toList());
