@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -22,7 +21,7 @@ public class DeptService {
     private final DeptRepository deptRepository;
 
     @Transactional(readOnly = true)
-    public List<DeptResponse> queryList() {
+    public List<DeptResponse> getDepts() {
         return deptRepository.findAll()
                 .stream()
                 .map(DeptResponse::new)
@@ -30,18 +29,18 @@ public class DeptService {
     }
 
     @Transactional(readOnly = true)
-    public DeptResponse query(Long id) {
+    public DeptResponse getDept(Long deptSeq) {
         //Optional
-        DeptEntity result = deptRepository.findById(id)
+        DeptEntity result = deptRepository.findById(deptSeq)
                 .orElseThrow(NullPointerException::new);
 
         return new DeptResponse(result);
     }
 
-    public DeptResponse save(DeptRequest dto) {
-        DeptEntity result = deptRepository.save(dto.toEntity());
+    public DeptResponse createDept(DeptRequest request) {
+        DeptEntity result = deptRepository.save(request.toEntity());
         return new DeptResponse(result);
     }
 
-    public void delete(Long id) { deptRepository.deleteById(id); }
+    public void deleteDept(Long deptSeq) { deptRepository.deleteById(deptSeq); }
 }

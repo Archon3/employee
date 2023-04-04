@@ -18,19 +18,19 @@ public class DeptController {
     private final DeptService deptService;
 
     @GetMapping()
-    public List<DeptResponse> queryList() { return deptService.queryList(); }
+    public List<DeptResponse> getDepts() { return deptService.getDepts(); }
 
-    @GetMapping(path = "/{id}")
-    public DeptResponse query(@PathVariable(value ="id") Long id) { return deptService.query(id); }
+    @GetMapping(path = "/{deptSeq}")
+    public DeptResponse getDept(@PathVariable(value ="deptSeq") Long deptSeq) { return deptService.getDept(deptSeq); }
 
     @PostMapping()
-    public DeptResponse save(@RequestBody DeptRequest requestDto) {
-        return deptService.save(requestDto);
+    public DeptResponse createDept(@RequestBody DeptRequest request) {
+        return deptService.createDept(request);
     }
 
-    @DeleteMapping(path = "/{id}")
-    public String delete(@PathVariable(value ="id") Long id) {
-        deptService.delete(id);
+    @DeleteMapping(path = "/{deptSeq}")
+    public String deleteDept(@PathVariable(value ="deptSeq") Long deptSeq) {
+        deptService.deleteDept(deptSeq);
         return "success";
     }
 }

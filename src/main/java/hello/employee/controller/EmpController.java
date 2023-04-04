@@ -18,19 +18,19 @@ public class EmpController {
     private final EmpService empService;
 
     @GetMapping()
-    public List<EmpResponse> queryList() { return empService.queryList(); }
+    public List<EmpResponse> getEmps() { return empService.getEmps(); }
 
-    @GetMapping(path = "/{id}")
-    public EmpResponse query(@PathVariable(value ="id") Long id) { return empService.query(id); }
+    @GetMapping(path = "/{empSeq}")
+    public EmpResponse getEmp(@PathVariable(value ="empSeq") Long empSeq) { return empService.getEmp(empSeq); }
 
     @PostMapping()
-    public EmpResponse save(@RequestBody EmpRequest requestDto) {
-        return empService.save(requestDto);
+    public EmpResponse createEmp(@RequestBody EmpRequest requestDto) {
+        return empService.createEmp(requestDto);
     }
 
-    @DeleteMapping(path = "/{id}")
-    public String delete(@PathVariable(value ="id") Long id) {
-        empService.delete(id);
+    @DeleteMapping(path = "/{empSeq}")
+    public String deleteEmp(@PathVariable(value ="empSeq") Long empSeq) {
+        empService.deleteEmp(empSeq);
         return "success";
     }
 }

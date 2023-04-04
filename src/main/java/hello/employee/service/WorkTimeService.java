@@ -25,7 +25,7 @@ public class WorkTimeService {
     private final WorkTimeRepository workTimeRepository;
 
     @Transactional(readOnly = true)
-    public List<WorkTimeQueryDto> queryByName(String empName, String begDate, String endDate) {
+    public List<WorkTimeQueryDto> getWorkTimeByName(String empName, String begDate, String endDate) {
 
         List<WorkTimeQueryDto> resultList = new ArrayList<>();
 

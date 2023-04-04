@@ -17,10 +17,10 @@ public class WorkTimeController {
     private final WorkTimeService workTimeService;
 
     @GetMapping(path = "/{empName}")
-    public List<WorkTimeQueryDto> queryByName(@PathVariable String empName,
+    public List<WorkTimeQueryDto> getWorkTimeByName(@PathVariable String empName,
                                               @RequestParam String begDate,
                                               @RequestParam String endDate) {
-        return workTimeService.queryByName(empName, begDate, endDate);
+        return workTimeService.getWorkTimeByName(empName, begDate, endDate);
     }
 
 }

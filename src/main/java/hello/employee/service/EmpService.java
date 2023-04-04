@@ -24,7 +24,7 @@ public class EmpService {
     private final DeptRepository deptRepository;
 
     @Transactional(readOnly = true)
-    public List<EmpResponse> queryList() {
+    public List<EmpResponse> getEmps() {
         return empRepository.findAll()
                 .stream()
                 .map(EmpResponse::new)
@@ -32,20 +32,20 @@ public class EmpService {
     }
 
     @Transactional(readOnly = true)
-    public EmpResponse query(Long id) {
+    public EmpResponse getEmp(Long empSeq) {
         //Optional
-        EmpEntity result = empRepository.findById(id)
+        EmpEntity result = empRepository.findById(empSeq)
                 .orElseThrow(NullPointerException::new);
 
         return new EmpResponse(result);
     }
 
-    public EmpResponse save(EmpRequest dto) {
+    public EmpResponse createEmp(EmpRequest request) {
 
-        EmpEntity emp = dto.toEntity();
+        EmpEntity emp = request.toEntity();
 
         //연관관계 매핑
-        DeptEntity dept = deptRepository.findById(dto.getDeptSeq()).get();
+        DeptEntity dept = deptRepository.findById(request.getDeptSeq()).get();
         emp.setDept(dept);
 
         EmpEntity result = empRepository.save(emp);
@@ -53,5 +53,5 @@ public class EmpService {
     }
 
     @Transactional
-    public void delete(Long id) { empRepository.deleteById(id); }
+    public void deleteEmp(Long empSeq) { empRepository.deleteById(empSeq); }
 }
