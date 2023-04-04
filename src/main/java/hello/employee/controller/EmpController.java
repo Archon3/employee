@@ -23,9 +23,9 @@ public class EmpController {
     @GetMapping(path = "/{empSeq}")
     public EmpResponse getEmp(@PathVariable(value ="empSeq") Long empSeq) { return empService.getEmp(empSeq); }
 
-    @PostMapping()
-    public EmpResponse createEmp(@RequestBody EmpRequest requestDto) {
-        return empService.createEmp(requestDto);
+        @PostMapping()
+    public EmpResponse createEmp(@RequestBody EmpRequest request) {
+        return empService.createEmp(request);
     }
 
     @DeleteMapping(path = "/{empSeq}")
