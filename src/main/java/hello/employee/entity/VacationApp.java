@@ -13,11 +13,12 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class VacationAppEntity {
+public class VacationApp {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "VacAppSeq")
-    private Long seq;
+    private Long vacAppSeq;
 
     @Column(name = "CompanySeq")
     private Long companySeq;

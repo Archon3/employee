@@ -1,7 +1,9 @@
 package hello.employee.controller;
 
-import hello.employee.entity.EmpRequest;
-import hello.employee.entity.EmpResponse;
+import hello.employee.dto.EmpRequest;
+import hello.employee.dto.EmpResponse;
+import hello.employee.dto.common.ServerResponse;
+import hello.employee.dto.common.SingleValueResponse;
 import hello.employee.service.EmpService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -11,26 +13,39 @@ import java.util.List;
 
 @Tag(name = "emp", description = "사원관리 API")
 @RestController
-@RequestMapping("/emp")
+@RequestMapping("/api/v1/emp")
 @RequiredArgsConstructor
 public class EmpController {
 
     private final EmpService empService;
 
-    @GetMapping()
-    public List<EmpResponse> getEmps() { return empService.getEmps(); }
-
-    @GetMapping(path = "/{empSeq}")
-    public EmpResponse getEmp(@PathVariable(value ="empSeq") Long empSeq) { return empService.getEmp(empSeq); }
-
-        @PostMapping()
-    public EmpResponse createEmp(@RequestBody EmpRequest request) {
-        return empService.createEmp(request);
+    @GetMapping(path = "/search")
+    public ServerResponse<List<EmpResponse>> getEmps() {
+        return ServerResponse.of(empService.getEmps());
     }
 
-    @DeleteMapping(path = "/{empSeq}")
-    public String deleteEmp(@PathVariable(value ="empSeq") Long empSeq) {
+    @GetMapping()
+    public ServerResponse<EmpResponse> getEmp(
+            @RequestParam Long empSeq) {
+        return ServerResponse.of(empService.getEmp(empSeq));
+    }
+
+    @PostMapping()
+    public ServerResponse<EmpResponse> createEmp(
+            @RequestBody EmpRequest request) {
+        return ServerResponse.of(empService.createEmp(request));
+    }
+
+    @PutMapping()
+    public ServerResponse<EmpResponse> updateEmp(
+            @RequestBody EmpRequest request) {
+        return ServerResponse.of(empService.updateEmp(request));
+    }
+
+    @DeleteMapping()
+    public ServerResponse<SingleValueResponse> deleteEmp(
+            @RequestParam Long empSeq) {
         empService.deleteEmp(empSeq);
-        return "success";
+        return ServerResponse.of(new SingleValueResponse(true));
     }
 }

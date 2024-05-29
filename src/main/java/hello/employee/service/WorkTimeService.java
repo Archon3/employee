@@ -1,7 +1,7 @@
 package hello.employee.service;
 
-import hello.employee.entity.EmpEntity;
-import hello.employee.entity.WorkTimeQueryDto;
+import hello.employee.entity.Emp;
+import hello.employee.dto.WorkTimeQueryResponse;
 import hello.employee.repository.EmpRepository;
 import hello.employee.repository.VacationAppRepository;
 import hello.employee.repository.WorkTimeRepository;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,37 +26,39 @@ public class WorkTimeService {
     private final WorkTimeRepository workTimeRepository;
 
     @Transactional(readOnly = true)
-    public List<WorkTimeQueryDto> getWorkTimeByName(String empName, String begDate, String endDate) {
+    public List<WorkTimeQueryResponse> getWorkTimeByName(String empName, String frDate, String toDate) {
 
-        List<WorkTimeQueryDto> resultList = new ArrayList<>();
+        List<WorkTimeQueryResponse> responseList = new ArrayList<>();
 
-        EmpEntity emp = empRepository.findByEmpName(empName).get();
+        Emp emp = empRepository.findByEmpName(empName).get();
 
         // 출퇴근
-        resultList.addAll(getWorkTimes(begDate, endDate, emp));
+        responseList.addAll(getWorkTimes(frDate, toDate, emp));
 
         // 휴가
-        resultList.addAll(getVacations(begDate, endDate, emp));
+        responseList.addAll(getVacations(frDate, toDate, emp));
 
-        return resultList;
+        return responseList.stream()
+                .sorted(Comparator.comparing(WorkTimeQueryResponse::getWkBegDate).reversed())
+                .collect(Collectors.toList());
     }
 
-    private List<WorkTimeQueryDto> getVacations(String begDate, String endDate, EmpEntity emp) {
-        return vacationAppRepository.findByEmpSeqAndWkBegDateBetween(emp.getSeq(), begDate, endDate)
+    private List<WorkTimeQueryResponse> getVacations(String ftDate, String toDate, Emp emp) {
+        return vacationAppRepository.findByEmpSeqAndWkBegDateBetween(emp.getEmpSeq(), ftDate, toDate)
                 .stream()
                 .map(vacation -> {
-                    WorkTimeQueryDto response = new WorkTimeQueryDto(vacation);
+                    WorkTimeQueryResponse response = new WorkTimeQueryResponse(vacation);
                     response.setEmpName(emp.getEmpName());
                     return response;
                 })
                 .collect(Collectors.toList());
     }
 
-    private List<WorkTimeQueryDto> getWorkTimes(String begDate, String endDate, EmpEntity emp) {
-        return workTimeRepository.findByEmpSeqAndWkBegDateBetween(emp.getSeq(), begDate, endDate)
+    private List<WorkTimeQueryResponse> getWorkTimes(String ftDate, String toDate, Emp emp) {
+        return workTimeRepository.findByEmpSeqAndWkBegDateBetween(emp.getEmpSeq(), ftDate, toDate)
                 .stream()
                 .map(workTime -> {
-                    WorkTimeQueryDto response = new WorkTimeQueryDto(workTime);
+                    WorkTimeQueryResponse response = new WorkTimeQueryResponse(workTime);
                     response.setEmpName(emp.getEmpName());
                     return response;
                 })

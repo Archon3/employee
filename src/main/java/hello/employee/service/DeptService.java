@@ -1,8 +1,9 @@
 package hello.employee.service;
 
-import hello.employee.entity.DeptRequest;
-import hello.employee.entity.DeptEntity;
-import hello.employee.entity.DeptResponse;
+import hello.employee.dto.DeptRequest;
+import hello.employee.entity.Dept;
+import hello.employee.dto.DeptResponse;
+import hello.employee.mapper.DeptMapper;
 import hello.employee.repository.DeptRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,27 +20,32 @@ import java.util.stream.Collectors;
 public class DeptService {
 
     private final DeptRepository deptRepository;
+    private final DeptMapper deptMapper;
 
     @Transactional(readOnly = true)
     public List<DeptResponse> getDepts() {
-        return deptRepository.findAll()
-                .stream()
-                .map(DeptResponse::new)
-                .collect(Collectors.toList());
+        return deptMapper.toDeptResponseList(deptRepository.findAll());
     }
 
     @Transactional(readOnly = true)
     public DeptResponse getDept(Long deptSeq) {
         //Optional
-        DeptEntity result = deptRepository.findById(deptSeq)
+        Dept result = deptRepository.findById(deptSeq)
                 .orElseThrow(NullPointerException::new);
 
-        return new DeptResponse(result);
+        return deptMapper.toDeptResponse(result);
     }
 
     public DeptResponse createDept(DeptRequest request) {
-        DeptEntity result = deptRepository.save(request.toEntity());
-        return new DeptResponse(result);
+        Dept dept = deptMapper.toDeptCreate(request);
+        Dept result = deptRepository.save(dept);
+        return deptMapper.toDeptResponse(result);
+    }
+
+    public DeptResponse updateDept(DeptRequest request) {
+        Dept dept = deptMapper.toDept(request);
+        Dept result = deptRepository.save(dept);
+        return deptMapper.toDeptResponse(result);
     }
 
     public void deleteDept(Long deptSeq) { deptRepository.deleteById(deptSeq); }

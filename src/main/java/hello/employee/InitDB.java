@@ -1,6 +1,10 @@
 package hello.employee;
 
+import hello.employee.dto.DeptRequest;
+import hello.employee.dto.EmpRequest;
 import hello.employee.entity.*;
+import hello.employee.mapper.DeptMapper;
+import hello.employee.mapper.EmpMapper;
 import hello.employee.repository.DeptRepository;
 import hello.employee.repository.EmpRepository;
 import hello.employee.repository.VacationAppRepository;
@@ -33,6 +37,8 @@ public class InitDB {
         private final EmpRepository empRepository;
         private final VacationAppRepository vacationAppRepository;
         private final WorkTimeRepository workTimeRepository;
+        private final EmpMapper empMapper;
+        private final DeptMapper deptMapper;
 
         public void initDept() {
             DeptRequest dDto = DeptRequest.builder()
@@ -44,41 +50,51 @@ public class InitDB {
         }
 
         public void initEmp() {
-            EmpRequest eDto1 = EmpRequest.builder()
+            EmpRequest request1 = EmpRequest.builder()
                     .companySeq(1L)
                     .empName("홍길동")
                     .build();
 
-            EmpRequest eDto2 = EmpRequest.builder()
+            EmpRequest request2 = EmpRequest.builder()
                     .companySeq(1L)
                     .empName("철수")
                     .build();
 
-            createEmp(eDto1);
-            createEmp(eDto2);
+            createEmp(request1);
+            createEmp(request2);
         }
 
         public void initWorkTime() {
+            Emp emp = empRepository.findByEmpName("홍길동").get();
 
-            EmpEntity emp = empRepository.findByEmpName("홍길동").get();
-
-            WorkTimeEntity wt = WorkTimeEntity.builder()
+            WorkTime wt1 = WorkTime.builder()
                     .companySeq(1L)
-                    .empSeq(emp.getSeq())
-                    .wkBegDate("20230306")
+                    .empSeq(emp.getEmpSeq())
+                    .wkBegDate("20240502")
                     .begTime("0900")
-                    .wkEndDate("20230317")
+                    .wkEndDate("20240502")
                     .endTime("1800")
                     .build();
 
-            workTimeRepository.save(wt);
+            workTimeRepository.save(wt1);
 
-            VacationAppEntity va = VacationAppEntity.builder()
+            WorkTime wt2 = WorkTime.builder()
                     .companySeq(1L)
-                    .empSeq(emp.getSeq())
-                    .wkBegDate("20230320")
+                    .empSeq(emp.getEmpSeq())
+                    .wkBegDate("20240507")
                     .begTime("0900")
-                    .wkEndDate("20230321")
+                    .wkEndDate("20240507")
+                    .endTime("1800")
+                    .build();
+
+            workTimeRepository.save(wt2);
+
+            VacationApp va = VacationApp.builder()
+                    .companySeq(1L)
+                    .empSeq(emp.getEmpSeq())
+                    .wkBegDate("20240503")
+                    .begTime("0900")
+                    .wkEndDate("20240503")
                     .endTime("1800")
                     .build();
 
@@ -86,18 +102,19 @@ public class InitDB {
 
         }
 
-        private void createDept(DeptRequest data) {
-            deptRepository.save(data.toEntity());
+        private void createDept(DeptRequest request) {
+            Dept dept = deptMapper.toDeptCreate(request);
+            deptRepository.save(dept);
         }
 
-        private void createEmp(EmpRequest data) {
-            EmpEntity entity = data.toEntity();
+        private void createEmp(EmpRequest request) {
+            Emp emp = empMapper.toEmp(request);
 
             // 연관관계 매핑
-            DeptEntity dept = deptRepository.findByDeptName("전사").get();
-            entity.setDept(dept);
+            Dept dept = deptRepository.findByDeptName("전사").get();
+            emp.setDept(dept);
 
-            empRepository.save(entity);
+            empRepository.save(emp);
         }
     }
 }

@@ -8,6 +8,8 @@ import static org.springframework.http.HttpStatus.*;
 @Getter
 public enum ExceptionType {
 
+    DATA_NOT_FOUND(200001, OK, "DATA_NOT_FOUND"),
+
     /* 400 BAD_REQUEST : 잘못된 요청 */
     UNKNOWN(400001, BAD_REQUEST, "UNKNOWN"),
     URI_NOT_FOUND(400002, BAD_REQUEST, "URI_NOT_FOUND"),

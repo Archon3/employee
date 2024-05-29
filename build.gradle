@@ -23,19 +23,24 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    // Swagger
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
-    implementation 'org.springdoc:springdoc-openapi-data-rest:1.6.14'
+    // swagger
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.12'
 
-    // DataBase
+    // dataBase
     implementation 'com.h2database:h2'
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // mapstruct
+    implementation "org.mapstruct:mapstruct:1.5.3.Final"
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
+    testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
 }
 
 tasks.named('test') {

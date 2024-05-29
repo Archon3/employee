@@ -14,11 +14,12 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DeptEntity {
+public class Dept {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "deptSeq")
-    private Long seq;
+    private Long deptSeq;
 
     @Column(name = "companySeq")
     private Long companySeq;

@@ -13,11 +13,12 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class EmpEntity {
+public class Emp {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "empSeq")
-    private Long seq;
+    private Long empSeq;
 
     @Column(name = "companySeq")
     private Long companySeq;
@@ -27,12 +28,14 @@ public class EmpEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "deptSeq")
-    private DeptEntity dept;
+    private Dept dept;
 
     /**
      * 연관관계 편의 메소드
      */
-    public void setDept(DeptEntity dept) { this.dept = dept; }
+    public void setDept(Dept dept) { this.dept = dept; }
+
+    public void setName(String name) {this.empName = name; }
 
 }
 

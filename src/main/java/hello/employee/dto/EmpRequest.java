@@ -1,5 +1,6 @@
-package hello.employee.entity;
+package hello.employee.dto;
 
+import hello.employee.entity.Emp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,12 +21,4 @@ public class EmpRequest {
 
     private String deptName;
 
-    /* Dto -> Entity */
-    public EmpEntity toEntity() {
-        return EmpEntity.builder()
-                .seq(this.empSeq)
-                .companySeq(this.companySeq)
-                .empName(this.empName)
-                .build();
-    }
 }

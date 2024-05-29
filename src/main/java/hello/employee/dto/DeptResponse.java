@@ -1,4 +1,4 @@
-package hello.employee.entity;
+package hello.employee.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,16 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class DeptResponse {
+
     private Long deptSeq;
 
     private Long companySeq;
 
     private String deptName;
 
-    /* Entity -> Dto */
-    public DeptResponse(DeptEntity data) {
-        this.deptSeq = data.getSeq();
-        this.companySeq = data.getCompanySeq();
-        this.deptName = data.getDeptName();
-    }
 }

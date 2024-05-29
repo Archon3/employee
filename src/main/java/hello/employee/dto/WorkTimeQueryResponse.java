@@ -1,5 +1,7 @@
-package hello.employee.entity;
+package hello.employee.dto;
 
+import hello.employee.entity.VacationApp;
+import hello.employee.entity.WorkTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WorkTimeQueryDto {
+public class WorkTimeQueryResponse {
 
     private Long empSeq;
 
@@ -25,7 +27,7 @@ public class WorkTimeQueryDto {
 
     private String endTime;
 
-    public WorkTimeQueryDto(WorkTimeEntity entity) {
+    public WorkTimeQueryResponse(WorkTime entity) {
         this.empSeq = entity.getEmpSeq();
         this.type = "work";
         this.wkBegDate = entity.getWkBegDate();
@@ -34,7 +36,7 @@ public class WorkTimeQueryDto {
         this.endTime = entity.getEndTime();
     }
 
-    public WorkTimeQueryDto(VacationAppEntity entity) {
+    public WorkTimeQueryResponse(VacationApp entity) {
         this.empSeq = entity.getEmpSeq();
         this.type = "vacation";
         this.wkBegDate = entity.getWkBegDate();

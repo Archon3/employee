@@ -1,12 +1,12 @@
 package hello.employee.repository;
 
-import hello.employee.entity.EmpEntity;
+import hello.employee.entity.Emp;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface EmpRepository extends JpaRepository<EmpEntity, Long> {
-    Optional<EmpEntity> findByEmpName(String name);
+public interface EmpRepository extends JpaRepository<Emp, Long> {
+    Optional<Emp> findByEmpName(String name);
 }
